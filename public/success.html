@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Failed - MoMo</title>
+
+    <style>
+        /* ===== MOMO STYLE (consistent with other pages) ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           APP CONTAINER
+        ========================================= */
+
+        .app {
+            position: relative;
+            width: 100%;
+            max-width: 540px;
+            min-height: 100vh;
+            min-height: 100svh;
+            margin: 0 auto;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           TOP BLUE AREA (slightly shorter for this page)
+        ========================================= */
+
+        .top {
+            position: relative;
+            height: 180px;
+            background: #004c69;
+            padding-top: 40px;
+        }
+
+        /*
+            White curved bottom of blue area
+        */
+        .top::after {
+            content: "";
+            position: absolute;
+            left: -10%;
+            bottom: -75px;
+            width: 120%;
+            height: 125px;
+            background: #fff;
+            border-radius: 50% 50% 0 0 / 70% 70% 0 0;
+        }
+
+        /* =========================================
+           TOP BAR WITH LOGO (no back button)
+        ========================================= */
+
+        .top-bar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 22px;
+            margin-top: -10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #087398, #003d59);
+            box-shadow: 0 2px 5px rgba(0,0,0,.25), inset 0 0 4px rgba(255,255,255,.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-symbol {
+            width: 22px;
+            height: 28px;
+            background: #ffd500;
+            clip-path: polygon(50% 0, 100% 30%, 86% 100%, 59% 69%, 39% 100%, 13% 34%);
+            position: relative;
+        }
+        .logo-symbol::after {
+            content: "";
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #004c69;
+            border-radius: 50%;
+            left: 8px;
+            top: 8px;
+        }
+
+        .logo-text {
+            color: #ffd500;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .logo-text .light {
+            font-weight: 400;
+            font-size: 14px;
+            color: #b8d4e8;
+        }
+
+        /* =========================================
+           CARD
+        ========================================= */
+
+        .card {
+            position: relative;
+            z-index: 5;
+            width: calc(100% - 36px);
+            margin: -100px auto 0;
+            background: #fff;
+            border-radius: 34px;
+            padding: 32px 27px 27px;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, .12);
+            text-align: center;
+        }
+
+        /* ----- FAILURE ICON ----- */
+        .icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #dc3545;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        /* ----- TITLE ----- */
+        .title {
+            font-size: 30px;
+            font-weight: 700;
+            color: #dc3545;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* ----- STATUS BADGE ----- */
+        .status-badge {
+            display: inline-block;
+            background: #fde2e5;
+            color: #dc3545;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* ----- MESSAGE BOX ----- */
+        .message-box {
+            background: #fef3f2;
+            border: 1px solid #fecdca;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .message-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .message-box h3 {
+            color: #dc3545;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .message-box p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .message-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ----- BUTTON ----- */
+        .btn {
+            display: block;
+            width: 100%;
+            background: #005572;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 700;
+            transition: background 0.3s ease, transform 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .btn:hover {
+            background: #00415a;
+            transform: scale(1.01);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 480px) {
+            .top {
+                height: 160px;
+                padding-top: 30px;
+            }
+            .top-bar {
+                padding: 0 16px;
+            }
+            .card {
+                width: calc(100% - 28px);
+                margin-top: -90px;
+                padding: 28px 20px 24px;
+                border-radius: 28px;
+            }
+            .title {
+                font-size: 26px;
+            }
+            .icon {
+                width: 70px;
+                height: 70px;
+                font-size: 36px;
+            }
+            .btn {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .card {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .subtitle {
+                font-size: 14px;
+            }
+            .message-box p {
+                font-size: 14px;
+            }
+            .btn {
+                font-size: 15px;
+                padding: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= TOP BLUE AREA ================= -->
+
+    <div class="top">
+
+        <div class="top-bar">
+            <!-- Logo (centered, no back button) -->
+            <div class="logo">
+                <div class="logo-box">
+                    <div class="logo-symbol"></div>
+                </div>
+                <div class="logo-text">MoMo <span class="light">from MTN</span></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= CARD ================= -->
+
+    <div class="card">
+
+        <!-- FAILURE ICON -->
+        <div class="icon">✕</div>
+
+        <!-- TITLE -->
+        <div class="title">Application Failed</div>
+
+        <div class="subtitle">
+            Unfortunately, your loan application was not successful.
+        </div>
+
+        <!-- STATUS -->
+        <div class="status-badge">
+            ✕ Application Declined
+        </div>
+
+        <!-- FAILURE REASON -->
+        <div class="message-box">
+
+            <span class="message-icon">⚠️</span>
+
+            <h3>Reason for Failure</h3>
+
+            <p>
+                Your application was not approved because you do not currently
+                have the required minimum balance of 10% of the amount you are
+                requesting.
+            </p>
+
+            <p>
+                Please deposit the required amount into your account and reapply
+                once the deposit has been completed.
+            </p>
+
+        </div>
+
+        <!-- REAPPLY BUTTON -->
+        <a href="index.html" class="btn">
+            Reapply
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

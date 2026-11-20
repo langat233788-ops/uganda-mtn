@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Copy and Paste a Message</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f8f7;
+      color: #172d30;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #135d66;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin: 10px 0;
+    }
+
+    header p {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    main {
+      width: min(100% - 30px, 1000px);
+      margin: 30px auto;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .tab {
+      border: 1px solid #135d66;
+      border-radius: 25px;
+      padding: 12px 20px;
+      cursor: pointer;
+      background: white;
+      color: #135d66;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .tab.active {
+      background: #135d66;
+      color: white;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #d5e4e1;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .card h2 {
+      background: #e2f2ee;
+      margin: 0;
+      padding: 15px;
+      font-size: 19px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    /* SMS phone mockup */
+    .phone {
+      width: 220px;
+      max-width: 100%;
+      margin: 0 auto 20px;
+      border: 7px solid #203d40;
+      border-radius: 28px;
+      background: #f6faf9;
+      overflow: hidden;
+      min-height: 230px;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 10px;
+      font-size: 10px;
+    }
+
+    .appbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      background: #e8f1ff;
+      color: #183b65;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .avatar {
+      display: inline-grid;
+      place-items: center;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #2878d0;
+      color: white;
+    }
+
+    .screen {
+      padding: 12px 8px;
+      min-height: 170px;
+      font-size: 12px;
+    }
+
+    .date {
+      text-align: center;
+      color: #718985;
+      font-size: 9px;
+      margin-bottom: 10px;
+    }
+
+    .bubble {
+      background: #e4eeeb;
+      border-radius: 12px 12px 12px 3px;
+      padding: 9px;
+      margin: 8px 0;
+      max-width: 95%;
+    }
+
+    .outgoing {
+      background: #d5e8ff;
+      margin-left: auto;
+      border-radius: 12px 12px 3px 12px;
+    }
+
+    .menu {
+      background: white;
+      border: 1px solid #d5e4e1;
+      border-radius: 8px;
+      padding: 8px;
+      margin-top: 10px;
+      box-shadow: 0 3px 10px #244b5020;
+    }
+
+    .menu div {
+      padding: 7px;
+    }
+
+    .menu .copy {
+      background: #dff3ed;
+      color: #135d66;
+      font-weight: bold;
+    }
+
+    .compose {
+      border: 1px solid #a9d4ca;
+      border-radius: 8px;
+      background: white;
+      padding: 10px;
+      margin-top: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    .send {
+      background: #2878d0;
+      color: white;
+      border-radius: 15px;
+      display: inline-block;
+      padding: 5px 10px;
+      margin-top: 8px;
+    }
+
+    .tip {
+      margin-top: 25px;
+      background: #e2f2ee;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .keyboard {
+      background: #e2eeeb;
+      border-radius: 10px;
+      padding: 20px 10px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .key {
+      display: inline-block;
+      background: white;
+      border: 1px solid #a9c5bf;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 4px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #55716d;
+    }
+
+    @media (max-width: 650px) {
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>How to Copy and Paste a Message</h1>
+  <p>
+    Learn how to copy an SMS message and paste it into
+    another conversation without typing it again.
+  </p>
+</header>
+
+<main>
+  <p>Choose the device you are using.</p>
+
+  <div class="tabs">
+    <button class="tab active" id="phoneTab"
+      onclick="showGuide('phone')">📱 Phone</button>
+
+    <button class="tab" id="computerTab"
+      onclick="showGuide('computer')">💻 Computer</button>
+  </div>
+
+  <!-- PHONE SMS GUIDE -->
+  <section id="phoneGuide">
+    <div class="steps">
+
+      <!-- STEP 1 -->
+      <article class="card">
+        <h2>1. Find the SMS message</h2>
+        <div class="content">
+
+          <div class="phone">
+            <div class="status">
+              <span>9:41</span>
+              <span>●●● ▰</span>
+            </div>
+
+            <div class="appbar">
+              <span class="avatar">A</span>
+              <span>Messages · Alex</span>
+            </div>
+
+            <div class="screen">
+              <div class="date">SMS · Today 9:40 AM</div>
+
+              <div class="bubble">
+                Hi! Here is the meeting address.
+              </div>
+
+              <div class="bubble outgoing">
+                Thanks, please send it.
+              </div>
+
+              <div class="bubble">
+                12 Market Street, at 2:00 PM
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Open your phone's SMS messaging app and find the
+            conversation containing the message you want to copy.
+          </p>
+        </div>
+      </article>
+
+      <!-- STEP 2 -->
+      <article class="card">
+        <h2>2. Press and hold the message</h2>
+        <div class="content">
+
+          <div class="phone">
+            <div class="status">
+              <span>9:41</span>
+              <span>●●● ▰</span>
+            </div>
+
+            <div class="appbar">
+              <span class="avatar">A</span>
+              <span>Messages · Alex</span>
+            </div>
+
+            <div class="screen">
+              <div class="bubble">
+                Hi! Here is the meeting address.
+              </div>
+
+              <div class="bubble outgoing"
+                style="outline:2px solid #e8b65b">
+                12 Market Street, at 2:00 PM
+              </div>
+
+              <p style="text-align:center;font-size:10px">
+                👆 Press and hold this SMS
+              </p>
+            </div>
+          </div>
+
+          <p>
+            Touch the message and keep your finger on it for
+            one or two seconds until a menu appears.
+          </p>
+        </div>
+      </article>
+
+      <!-- STEP 3 -->
+      <article class="card">
+        <h2>3. Tap Copy</h2>
+        <div class="content">
+
+          <div class="phone">
+            <div class="status">
+              <span>9:41</span>
+              <span>●●● ▰</span>
+            </div>
+
+            <div class="appbar">
+              <span class="avatar">A</span>
+              <span>Messages · Alex</span>
+            </div>
+
+            <div class="screen">
+              <div class="bubble outgoing">
+                12 Market Street, at 2:00 PM
+              </div>
+
+              <div class="menu">
+                <div class="copy">▢ Copy ✓</div>
+                <div>↗ Forward</div>
+                <div>☆ Star message</div>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Tap <strong>Copy</strong> in the menu. The SMS is
+            now copied and ready to paste somewhere else.
+          </p>
+        </div>
+      </article>
+
+      <!-- STEP 4 -->
+      <article class="card">
+        <h2>4. Paste the SMS message</h2>
+        <div class="content">
+
+          <div class="phone">
+            <div class="status">
+              <span>9:42</span>
+              <span>●●● ▰</span>
+            </div>
+
+            <div class="appbar">
+              <span class="avatar">J</span>
+              <span>Messages · Jamie</span>
+            </div>
+
+            <div class="screen">
+              <div class="date">Text message · SMS</div>
+
+              <div class="compose">
+                12 Market Street, at 2:00 PM
+              </div>
+
+              <div style="text-align:right">
+                <span class="send">Send SMS</span>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Open another conversation. Press and hold inside
+            the text box, tap <strong>Paste</strong>, then
+            check the message before sending it.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- COMPUTER GUIDE -->
+  <section id="computerGuide" hidden>
+    <div class="steps">
+
+      <article class="card">
+        <h2>1. Select the message</h2>
+        <div class="content">
+          <div class="keyboard">🖱️ Select the text</div>
+          <p>
+            Use your mouse to highlight the message you want
+            to copy.
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>2. Copy the text</h2>
+        <div class="content">
+          <div class="keyboard">
+            <span class="key">Ctrl</span> +
+            <span class="key">C</span>
+          </div>
+          <p>
+            Press Ctrl + C on Windows, or Command + C on Mac.
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>3. Choose where it goes</h2>
+        <div class="content">
+          <div class="keyboard">📝 Click the text box</div>
+          <p>
+            Click where you want the copied message to appear.
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>4. Paste the text</h2>
+        <div class="content">
+          <div class="keyboard">
+            <span class="key">Ctrl</span> +
+            <span class="key">V</span>
+          </div>
+          <p>
+            Press Ctrl + V on Windows, or Command + V on Mac.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="tip">
+    <strong>💡 Helpful tip</strong>
+    <p>
+      Copy makes a temporary copy of the message.
+      Paste places that copied text somewhere else.
+      The original SMS normally remains in the conversation.
+    </p>
+  </div>
+</main>
+
+<footer>
+  Beginner guide · SMS phone and computer instructions
+</footer>
+
+<script>
+  function showGuide(device) {
+    const phoneGuide = document.getElementById("phoneGuide");
+    const computerGuide = document.getElementById("computerGuide");
+    const phoneTab = document.getElementById("phoneTab");
+    const computerTab = document.getElementById("computerTab");
+
+    phoneGuide.hidden = device !== "phone";
+    computerGuide.hidden = device !== "computer";
+
+    phoneTab.classList.toggle("active", device === "phone");
+    computerTab.classList.toggle("active", device === "computer");
+  }
+</script>
+
+</body>
+</html>
